@@ -26,15 +26,55 @@
 let bowling = {
 
     players: [
-        {name: "Miki", scores: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-        {name: "Ale", scores: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-        {name: "Phil", scores: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-        {name: "Salvo", scores: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+        {name: "Miki", scores: []},
+        {name: "Ale", scores: []},
+        {name: "Phil", scores: []},
+        {name: "Salvo", scores: []}
     ],
 
     random_scores: function(){
-
+        this.players.forEach(player => {
+            for (let i = 1; i <= 10; i++) {
+               player.scores.push(Math.floor(Math.random() * (10 - 1 +1) + 1));
+            }
+            // console.log(player.scores);            
+        })
     },
 
-    final_score: function(){},
+    new_player: function(nome){
+        let newPlayer = {name: nome, scores: []}
+        for (let i = 1; i <= 10; i++) {
+            newPlayer.scores.push(Math.floor(Math.random() * (10 - 1 +1) + 1));
+         }
+         this.players.push(newPlayer);
+        //  console.log(newPlayer.scores);
+    },     
+
+    final_score: function(){
+        this.players.forEach(player => {
+            let tot = player.scores.reduce((acc, num)=> acc + num);
+            player.totale = tot;
+            // console.log(player.totale);
+        })
+
+        this.players.sort((a, b)=> b.totale - a.totale)
+    },
+
+    winner: function(){
+        let vincitore = this.players[0];
+        console.log(`Il vincitore è ${vincitore.name} con ${vincitore.totale} punti!`); 
+    },
+
+    chart: function(){
+        console.log(`Classifica finale:`);
+        this.players.forEach(player => {
+            console.log(`${player.name}: ${player.totale} punti`);
+        })
+    }
 }
+
+bowling.random_scores();
+bowling.new_player("Anna");
+bowling.final_score();
+bowling.winner();
+bowling.chart();
